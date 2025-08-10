@@ -1,29 +1,27 @@
-name: Deploy to Railway
+:contentReference[oaicite:13]{index=13}
 
-on:
-  push:
-    branches:
-      - main
+Bu workflow, `main` dalına her push işlemi yapıldığında tetiklenir ve projeyi Railway'e deploy eder.:contentReference[oaicite:16]{index=16}
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+---
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+### 🔐 GitHub Secrets Ayarları
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
+Workflow'da kullanılan `RAILWAY_API_KEY` ve `RAILWAY_PROJECT_ID` gibi gizli anahtarları GitHub repository'nin secrets kısmına eklemen gerekmektedir:​:contentReference[oaicite:19]{index=19}
 
-      - name: Install dependencies
-        run: npm install
+1. GitHub repository'ne git.
+2. "Settings" sekmesine tıkla.
+3. Sol menüden "Secrets and variables" > "Actions" seçeneğine tıkla.
+4. "New repository secret" butonuna tıkla.
+5. Açılan formda, `RAILWAY_API_KEY` ve `RAILWAY_PROJECT_ID` anahtarlarını ve değerlerini girerek "Add secret" butonuna tıkla.:contentReference[oaicite:30]{index=30}
 
-      - name: Deploy to Railway
-        uses: bervProject/railway-deploy@main
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        with:
-          service: "license-bot"
+---
+
+### ✅ Workflow'u Test Etme
+
+Yukarıdaki adımları tamamladıktan sonra, `main` dalına yeni bir commit push'ladığında, GitHub Actions otomatik olarak workflow'u çalıştıracaktır. Workflow'un başarılı bir şekilde tamamlanıp tamamlanmadığını GitHub repository'nin "Actions" sekmesinden kontrol edebilirsin.:contentReference[oaicite:35]{index=35}
+
+---
+
+Eğer daha fazla yardıma ihtiyacın olursa, lütfen belirt!
+::contentReference[oaicite:36]{index=36}
+ 
